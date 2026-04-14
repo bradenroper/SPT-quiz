@@ -60,6 +60,7 @@ export interface AnswerResult {
 export interface QuestionBreakdown {
   questionId: number
   questionText: string
+  type: QuestionType
   totalAnswers: number
   correctAnswers: number
   accuracy: number

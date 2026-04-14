@@ -20,6 +20,7 @@ export async function GET() {
     return {
       questionId: q.id,
       questionText: q.text,
+      type: q.type as QuestionType,
       totalAnswers: qTotal,
       correctAnswers: qCorrect,
       accuracy:
