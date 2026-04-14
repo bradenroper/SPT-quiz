@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id            Int          @id @default(autoincrement())
+  text          String
+  type          QuestionType
+  category      String
+  difficulty    Difficulty
+  correctAnswer String
+  explanation   String?
+  options       Option[]
+  answers       Answer[]
+}
+
+model Option {
+  id         Int      @id @default(autoincrement())
+  text       String
+  isCorrect  Boolean
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers    Answer[]
+}
+
+model Answer {
+  id               Int      @id @default(autoincrement())
+  questionId       Int
+  selectedOptionId Int?
+  textResponse     String?
+  booleanResponse  Boolean?
+  isCorrect        Boolean
+  createdAt        DateTime @default(now())
+  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOption   Option?  @relation(fields: [selectedOptionId], references: [id])
+}
+
+enum QuestionType {
+  multiple_choice
+  free_response
+  true_false
+}
+
+enum Difficulty {
+  easy
+  medium
+  hard
+}

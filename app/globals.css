@@ -1,0 +1,8 @@
+/*
+ * Tailwind v4 — import only utilities and theme layers.
+ * We intentionally skip the base/preflight layer to avoid conflicts with
+ * MUI's CssBaseline, which is included in the root layout and handles
+ * the CSS reset instead.
+ */
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" layer(utilities);
