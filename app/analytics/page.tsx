@@ -44,18 +44,28 @@ import { useState } from 'react'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import RestoreIcon from '@mui/icons-material/Restore'
 import { useAnalytics } from '@/app/hooks/useAnalytics'
 
 export default function AnalyticsPage() {
-  const { data, loading, error } = useAnalytics()
+  const { data, loading, error, refetch } = useAnalytics()
   const [clearing, setClearing] = useState(false)
+  const [resetting, setResetting] = useState(false)
 
   async function clearData() {
     if (!confirm('Clear all answer data? This cannot be undone.')) return
     setClearing(true)
     await fetch('/api/answers', { method: 'DELETE' })
-    // Reload the page so the hook re-fetches fresh data
-    window.location.reload()
+    setClearing(false)
+    refetch()
+  }
+
+  async function resetToDemo() {
+    if (!confirm('Reset to demo data? This will replace all current answers.')) return
+    setResetting(true)
+    await fetch('/api/answers/reset', { method: 'POST' })
+    setResetting(false)
+    refetch()
   }
 
   // TODO: Handle the loading state (loading === true)
@@ -64,15 +74,24 @@ export default function AnalyticsPage() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      {/* Clear data button — pre-built, no changes needed */}
-      <Box className="flex justify-end mb-4">
+      {/* Data controls — pre-built, no changes needed */}
+      <Box className="flex justify-end gap-2 mb-4">
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<RestoreIcon />}
+          onClick={resetToDemo}
+          disabled={resetting || clearing}
+        >
+          Load Demo Data
+        </Button>
         <Button
           variant="outlined"
           color="error"
           size="small"
           startIcon={<DeleteOutlineIcon />}
           onClick={clearData}
-          disabled={clearing}
+          disabled={clearing || resetting}
         >
           Clear All Data
         </Button>

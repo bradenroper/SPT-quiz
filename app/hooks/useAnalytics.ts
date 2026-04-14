@@ -7,8 +7,11 @@ export function useAnalytics() {
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [tick, setTick] = useState(0)
 
   useEffect(() => {
+    setLoading(true)
+    setError(null)
     fetch('/api/analytics')
       .then((res) => {
         if (!res.ok) throw new Error(`Failed to fetch analytics (${res.status})`)
@@ -22,7 +25,11 @@ export function useAnalytics() {
         setError(err.message)
         setLoading(false)
       })
-  }, [])
+  }, [tick])
 
-  return { data, loading, error }
+  function refetch() {
+    setTick((t) => t + 1)
+  }
+
+  return { data, loading, error, refetch }
 }
