@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
+import ReplayIcon from '@mui/icons-material/Replay'
 import QuestionRenderer from '@/app/components/questions/QuestionRenderer'
 import { useQuestions } from '@/app/hooks/useQuestions'
 import { useAnswer } from '@/app/hooks/useAnswer'
@@ -65,6 +66,12 @@ export default function QuizPage() {
   const answeredResult = answers[question.id]
   const answeredCount = Object.keys(answers).length
   const progressPct = Math.round((answeredCount / questions.length) * 100)
+  const quizComplete = answeredCount === questions.length
+
+  function retakeQuiz() {
+    setAnswers({})
+    setCurrentIndex(0)
+  }
 
   async function handleAnswer(partial: PartialAnswer) {
     if (answers[question.id]) return // already answered
@@ -166,6 +173,16 @@ export default function QuizPage() {
         </Alert>
       )}
 
+      {/* Quiz complete banner */}
+      {quizComplete && (
+        <Alert severity="info" className="mb-4">
+          <AlertTitle>Quiz complete!</AlertTitle>
+          You answered all {questions.length} questions.{' '}
+          {Object.values(answers).filter((a) => a.correct).length} /{' '}
+          {questions.length} correct.
+        </Alert>
+      )}
+
       {/* Navigation */}
       <Box className="flex justify-between">
         <Button
@@ -176,14 +193,26 @@ export default function QuizPage() {
         >
           Previous
         </Button>
-        <Button
-          variant="contained"
-          endIcon={<ArrowForwardIcon />}
-          disabled={currentIndex === questions.length - 1 || !answeredResult}
-          onClick={() => setCurrentIndex((i) => i + 1)}
-        >
-          Next
-        </Button>
+        <Box className="flex gap-2">
+          {quizComplete && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              startIcon={<ReplayIcon />}
+              onClick={retakeQuiz}
+            >
+              Retake Quiz
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            endIcon={<ArrowForwardIcon />}
+            disabled={currentIndex === questions.length - 1 || !answeredResult}
+            onClick={() => setCurrentIndex((i) => i + 1)}
+          >
+            Next
+          </Button>
+        </Box>
       </Box>
     </Container>
   )

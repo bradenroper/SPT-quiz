@@ -40,10 +40,23 @@
  * You may use MUI components, Tailwind utility classes, or both for styling.
  */
 
+import { useState } from 'react'
+import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useAnalytics } from '@/app/hooks/useAnalytics'
 
 export default function AnalyticsPage() {
   const { data, loading, error } = useAnalytics()
+  const [clearing, setClearing] = useState(false)
+
+  async function clearData() {
+    if (!confirm('Clear all answer data? This cannot be undone.')) return
+    setClearing(true)
+    await fetch('/api/answers', { method: 'DELETE' })
+    // Reload the page so the hook re-fetches fresh data
+    window.location.reload()
+  }
 
   // TODO: Handle the loading state (loading === true)
   // TODO: Handle the error state (error !== null)
@@ -51,7 +64,21 @@ export default function AnalyticsPage() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      {/* Replace this placeholder with your implementation */}
+      {/* Clear data button — pre-built, no changes needed */}
+      <Box className="flex justify-end mb-4">
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          startIcon={<DeleteOutlineIcon />}
+          onClick={clearData}
+          disabled={clearing}
+        >
+          Clear All Data
+        </Button>
+      </Box>
+
+      {/* Replace everything below with your implementation */}
       <p style={{ color: '#999', fontStyle: 'italic' }}>
         Analytics Dashboard not yet implemented.
       </p>
