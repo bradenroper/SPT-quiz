@@ -13,18 +13,14 @@ Welcome! This is a pre-built trivia quiz application. Your job is to complete tw
 
 ## Setup
 
-Run these commands in order from the project root:
-
 ```bash
 npm install
-npm run db:generate
-npm run db:migrate
 npm run dev
 ```
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-> **Note:** `npm run db:migrate` automatically seeds the database with 12 trivia questions the first time it runs. If you ever need to reset the data, run `npm run db:reset`.
+> The database is included in the repo and pre-seeded with 12 trivia questions. `npm install` generates the Prisma client automatically via a `postinstall` hook.
 
 ---
 
@@ -51,7 +47,7 @@ Once implemented, test your components at [http://localhost:3000/quiz](http://lo
 
 ### Task 2 — Analytics Dashboard
 
-Build a statistics dashboard using data from the pre-built `useAnalytics()` hook.
+Build a statistics dashboard on the analytics page. Use the pre-built `useAnalytics()` hook to fetch data and display overall accuracy, per-type breakdowns, and a per-question table. Read the comment at the top of the file for details.
 
 **File to edit:** `app/analytics/page.tsx`
 
@@ -68,7 +64,7 @@ data.typeBreakdown         // accuracy broken down by question type
 // [{ type, totalAnswers, correctAnswers, accuracy }]
 
 data.questionBreakdown     // accuracy for each individual question
-// [{ questionId, questionText, totalAnswers, correctAnswers, accuracy }]
+// [{ questionId, questionText, type, totalAnswers, correctAnswers, accuracy }]
 ```
 
 Your dashboard should display at minimum:
@@ -78,6 +74,8 @@ Your dashboard should display at minimum:
 4. Per-question breakdown as a list or table
 
 View your dashboard at [http://localhost:3000/analytics](http://localhost:3000/analytics).
+
+> **Tip:** The analytics page has two pre-built buttons — **Load Demo Data** and **Clear All Data** — that you can use to populate or wipe answer data while building your dashboard.
 
 ---
 
@@ -89,7 +87,9 @@ app/
 │   ├── questions/              GET /api/questions
 │   ├── questions/[id]/         GET /api/questions/:id
 │   ├── questions/[id]/answer/  POST /api/questions/:id/answer
-│   └── analytics/              GET /api/analytics
+│   ├── analytics/              GET /api/analytics
+│   └── answers/                DELETE /api/answers
+│       └── reset/              POST /api/answers/reset
 ├── components/
 │   └── questions/
 │       ├── MultipleChoiceQuestion.tsx  ← Task 1
@@ -124,6 +124,6 @@ Both are already installed and ready to use.
 | Command | Description |
 |---|---|
 | `npm run dev` | Start the development server |
-| `npm run db:reset` | Reset and re-seed the database |
+| `npm run db:reset` | Drop and recreate the database, re-seed questions, clear all answers |
 | `npm run db:studio` | Open Prisma Studio to inspect the database |
 | `npm run build` | Build for production (checks for TypeScript errors) |
