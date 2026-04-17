@@ -1,32 +1,46 @@
-# Trivia App — Student Programmer Performance Task
+# Student Programmer Performance Task
 
-Welcome! This is a pre-built trivia quiz application. Your job is to complete two programming tasks described below. Everything else — the database, API endpoints, routing, and quiz shell — is already working.
+Welcome! This is a pre-built trivia quiz application. Your job is to complete two programming tasks described below. Everything else (ie. the database, API endpoints, routing, and quiz shell) is already working.
 
----
+## Contents
+
+- [Prerequisites](#prerequisites)
+- [Setup](#setup)
+- [Your Tasks](#your-tasks)
+    - [Task 1](#task-1-question-components)
+    - [Task 2](#task-2-analytics-dashboard)
+- [Project Structure](#project-structure)
+- [UI Libraries](#available-ui-libraries)
+- [Use of AI](#use-of-ai-tools)
+- [Useful Commands](#useful-commands)
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) v20 or higher
 - A code editor (VS Code recommended)
 
----
 
 ## Setup
 
+Instead of forking this repository, you will copy this repository via the _Use this template_ option and add me ([bradenroper](https://github.com/bradenroper)) as a collaborator. See instructions provided by email for more information.
+
+After creating the repository, setup is fairly straightforward:
+
 ```bash
+# install dependencies
 npm install
+# run the development server, app can then be viewed in your browser
 npm run dev
 ```
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-> The database is included in the repo and pre-seeded with 12 trivia questions. `npm install` generates the Prisma client automatically via a `postinstall` hook.
+A prepopulated database (`/prisma/dev.db`) should be included by default, and the application has built in functions to clear the database or repopulate it with dummy data for your conveninece. However, should you need commands to rerun database migrations, those can be see at the bottom of this document.
 
----
 
 ## Your Tasks
 
-### Task 1 — Question Components
+### Task 1: Question Components
 
 Implement the three React components that render each question type. Open each file and follow the instructions in the comment at the top.
 
@@ -43,11 +57,10 @@ Each component receives:
 
 Once implemented, test your components at [http://localhost:3000/quiz](http://localhost:3000/quiz).
 
----
 
-### Task 2 — Analytics Dashboard
+### Task 2: Analytics Dashboard
 
-Build a statistics dashboard on the analytics page. Use the pre-built `useAnalytics()` hook to fetch data and display overall accuracy, per-type breakdowns, and a per-question table. Read the comment at the top of the file for details.
+Build a statistics dashboard using data from the pre-built `useAnalytics()` hook.
 
 **File to edit:** `app/analytics/page.tsx`
 
@@ -64,7 +77,7 @@ data.typeBreakdown         // accuracy broken down by question type
 // [{ type, totalAnswers, correctAnswers, accuracy }]
 
 data.questionBreakdown     // accuracy for each individual question
-// [{ questionId, questionText, type, totalAnswers, correctAnswers, accuracy }]
+// [{ questionId, questionText, totalAnswers, correctAnswers, accuracy }]
 ```
 
 Your dashboard should display at minimum:
@@ -75,9 +88,6 @@ Your dashboard should display at minimum:
 
 View your dashboard at [http://localhost:3000/analytics](http://localhost:3000/analytics).
 
-> **Tip:** The analytics page has two pre-built buttons — **Load Demo Data** and **Clear All Data** — that you can use to populate or wipe answer data while building your dashboard.
-
----
 
 ## Project Structure
 
@@ -87,9 +97,7 @@ app/
 │   ├── questions/              GET /api/questions
 │   ├── questions/[id]/         GET /api/questions/:id
 │   ├── questions/[id]/answer/  POST /api/questions/:id/answer
-│   ├── analytics/              GET /api/analytics
-│   └── answers/                DELETE /api/answers
-│       └── reset/              POST /api/answers/reset
+│   └── analytics/              GET /api/analytics
 ├── components/
 │   └── questions/
 │       ├── MultipleChoiceQuestion.tsx  ← Task 1
@@ -117,13 +125,16 @@ Both are already installed and ready to use.
 - **[MUI (Material UI)](https://mui.com/material-ui/)** — component library (`Button`, `TextField`, `Table`, `Card`, etc.)
 - **[Tailwind CSS](https://tailwindcss.com/docs)** — utility classes for spacing, layout, and color
 
----
+
+## Use of AI tools
+
+AI tools are not banned from this task, though if you wish to use them, make sure that you are prepared to explain your development process and rationale.
 
 ## Useful Commands
 
 | Command | Description |
 |---|---|
 | `npm run dev` | Start the development server |
-| `npm run db:reset` | Drop and recreate the database, re-seed questions, clear all answers |
+| `npm run db:reset` | Reset and re-seed the database |
 | `npm run db:studio` | Open Prisma Studio to inspect the database |
-| `npm run build` | Build for production (checks for TypeScript errors) |
+| `npm run build` | Build for production (checks for TypeScript errors, but isn't required) |
